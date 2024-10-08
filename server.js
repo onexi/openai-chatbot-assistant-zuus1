@@ -101,9 +101,11 @@ app.post('/api/threads', async (req, res) => {
 app.post('/api/run', async (req, res) => {
   const { message } = req.body;
 
-  // Add the user's message to the state
-  state.messages.push({ role: 'user', content: message });
-  
+  // // Add the user's message to the state
+  // state.messages.push({ role: 'user', content: message });
+    // Reset the messages array to only keep the latest interaction
+    state.messages = [{ role: 'user', content: message }];
+    
   try {
     // Ensure state.threadId exists before making the request
     if (!state.threadId) {
