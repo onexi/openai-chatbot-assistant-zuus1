@@ -9,9 +9,16 @@ let state = {
 // Get assistand details by name or ID
 async function getAssistant(){
   // Get the assistant name from the input field
-  let name = document.getElementById('assistant_name').value;
+  // let name = document.getElementById('assistant_name').value;
+  const assistantSelect = document.getElementById('assistantSelect');
+  const assistantId = assistantSelect.value;
+  const assistantName = assistantSelect.options[assistantSelect.selectedIndex].text;
+  
+  state.assistant_id = assistantId;
+  state.assistant_name = assistantName;
+
   // Log the assistant name to the console
-  console.log(`assistant_id: ${name}`)
+  console.log(`assistant_id: ${state.assistant_id}`);
 
   // Make a POST request to the server to get the assistant details
   const response = await fetch('/api/assistants', {
@@ -19,12 +26,13 @@ async function getAssistant(){
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ name: name }),
+    body: JSON.stringify({ name: state.assistant_id }),
   });
   
   // Log the response to the console
   state = await response.json();  // the state object is updated with the response from the server
-  writeToMessages(`Assistant ${state.assistant_name} is ready to chat`);
+  // writeToMessages(`Assistant ${state.assistant_name} is ready to chat`);
+  writeToMessages(`Assistant is ready to chat`);
   console.log(`back from fetch with state: ${JSON.stringify(state)}`)
 }
 
@@ -105,12 +113,6 @@ async function getResponse() {
     writeToMessages('Failed to get a response from the assistant.', 'error');
   }
 }
-
-// async function writeToMessages(message){
-//   let messageDiv = document.getElementById("message-container");
-//   messageDiv.innerHTML = message;
-//   document.getElementById('messages').appendChild(messageDiv);
-// }
 
 // Function to display messages in the chat interface
 function writeToMessages(message, role = 'user') {
