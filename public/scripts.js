@@ -100,7 +100,8 @@ async function getResponse() {
     console.log('Assistant response:', result);
 
     // Display the assistant's messages
-    const assistantMessage = result.messages.find(msg => msg.role === 'assistant');
+    const assistantMessage = result.messages.slice().reverse().find(msg => msg.role === 'assistant');
+    // const assistantMessage = result.messages.find(msg => msg.role === 'assistant');
     if (assistantMessage) {
       // Extract the text value from the assistant's message
       const content = assistantMessage.content.map(part => part.text.value).join(' ');
@@ -116,12 +117,12 @@ async function getResponse() {
 
 // Function to display messages in the chat interface
 function writeToMessages(message, role = 'user') {
-  const messageContainer = document.getElementById('message-container');
+    const messageContainer = document.getElementById('message-container');
 
   // Create a new div for each message
   const messageElement = document.createElement('div');
-  messageElement.classList.add('message', role);
   messageElement.textContent = message;
+  messageElement.classList.add('message', role);
 
   // Append the new message to the message container
   messageContainer.appendChild(messageElement);
